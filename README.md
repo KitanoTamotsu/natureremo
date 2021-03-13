@@ -1,2 +1,0 @@
-# natureremo
-Alfred workflow
