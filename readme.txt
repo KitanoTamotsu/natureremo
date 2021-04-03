@@ -114,7 +114,9 @@ ver1.0既知のバグ
  セットするIDについても違っていました。下記が正しいものですが、NatureRemo登録の仕方で変わります（バージョンや製品で変わるかもしれません）
  e8c7cff1-343e-4b5f-ae0b-fdb4927307aa　（NatuerRemoのデフォルトアイコン2に相当するものす。もとのワークフローでは3相当のIDでした）
  
- 
+ver1.1
+ TV番組表.alfredworkflowと連携させるため、青い部分を追加しています
+ 開発メモ等の詳細は、https://github.com/KitanoTamotsu/tv をご覧ください
 
 
 
