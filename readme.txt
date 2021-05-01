@@ -74,7 +74,7 @@ NatureRemoのAPIでTVをリモコン操作する
 5.APIを利用する
 
 　特に工夫した部分はなく、シェルスクリプトに書けばできちゃう感じです
-　atureRemoのAPIでは、tokenとIDで、どのNatureRemoで何の操作をするかを指定します
+　NatureRemoのAPIでは、tokenとIDで、どのNatureRemoで何の操作をするかを指定します
 　tokenは変数として固有の値を指定しているので、スクリプト内では$tokenとして記述できます
 　curlのコマンドに埋め込んでいますので確認してみてください
 
