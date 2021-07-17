@@ -1,81 +1,99 @@
-## 　　Lesson9.　ブラウザからURLを取得する 
+## 　　Lesson10.　TVのリモコン
 #### 開発メモ
-### 1.ページ翻訳のコア
-　google翻訳を利用します
-<br>  最終的なURLは下記なので、U=の部分に翻訳したいURLを入れればよさそうですね
-```
-https://translate.google.com/translate?sl=en&tl=ja&u=　
-```
-### 2.選択中の文字列を取得する
-　HOTKEYワークフローの設定で実装しています
-<br>　HOTKEYの設定タブのArgumentでSelection in macOSを選択します
-### 3.クリップボードの内容を取得する（特定の変数をスクリプトに渡す）
-　Alfredワークフローで利用できる変数の{clipboard:0}を利用します
-<br>　数字は0が直近のクリップボード、1が1つ前、2が2つ前というように履歴参照ができます
+### 1.NatureRemoのAPI
+　URLでNatureRemoをコントロールできます
+<br>　Tokenの取得やAPIの詳細はインターネットで調べてください
+<br>　APIはCURLのPOSTで操作が可能ですのでターミナルで遊んでみてください
+<br>　なお、Tokenは個々のNatureRemoへのアクセス用になるので、公開できない情報です
+<br>　（公開するとあなたの家電を第3者がコントロールできちゃいますから）
+### 2.export禁止変数
+<br>　tokenのような情報はexport禁止の変数として管理します
+<br>　ワークフロー右上の[χ]をクリックして環境変数の一覧を表示させてください
+<br>　インストール後には、Nameにtoken、valueが空欄、Don't Exportにチェックとなっています
+<br>　valueにご自身の使いたいNatureRemoのトークンを貼り付けてください
+<br>　引用符は不要です
+### 2.export禁止変数
+　tokenのような情報はexport禁止の変数として管理します
+<br>　ワークフロー右上の[χ]をクリックして環境変数の一覧を表示させてください
+<br>　インストール後には、Nameにtoken、valueが空欄、Don't Exportにチェックとなっています
+<br>　valueにご自身の使いたいNatureRemoのトークンを貼り付けてください
+<br>　引用符は不要です　
+### 3.キーワード（TV）入力時のパラメータ
+　キーワドなしとキーワドありをサポートしたいのでArgument Optionalを指定しています
+<br>　この後のconditionalユーティリティで処理の分岐を制御しています
+### 4.入力パラメータによって処理を分岐させる（conditionalユーティリティ）
+　今回のconditionalユーティリティは4分岐としています
+<br>　シェルスクリプトのソースは基本コマンドラインの集合で、構造化に向いていないので
+<br>　このように分岐させるとわかりやすいかな
 <br>
-<br>　シェルスクリプトで利用できるようにArg and Valsユーティリティを利用します
-<br>　Variables:に下記の項目を追加します。
-<br>　Name:clipboard Value:{clipboard:0}　
-<br>　こうすると、後続のワークフローで＄clipboardとして利用できます
+<br>　conditionalユーティリティを開いてみてください
+<br>　1行目の条件はパラメータがない状態を意味します（『is equal to』と『（空欄）』）
+<br>　なお『then』のあとのテキスト（『On/Off』）はalfredワークフローをわかりやすくするための表示用文字列です
+<br>　ソースコードを書くような感じに見えますが勘違いしないようにご注意ください
 <br>
-<br>　※選択アイテムがない場合にクリップボードを取得するロジックを作っていますが、
-<br>　　実際には、直近のクリップボードにURLかどうか覚えていないので実用的ではないです
-<br>　　まあ、クリップボードの練習ですね
-### 4.正しいURLかどうか確認する
-　AlfredのConditionalユーティリティを利用します
-<br>　このユーティリティは正規表現を条件に指定できるので、URLのチェックに使ってみました
-<br>　ネットから下記の正規表現を拾ってきましたが、ちんぷんかんぷんですっ！
-<br>　https?://[\w!\?/\+\-_~=;\.,\*&@#\$%\(\)'\[\]]+ 
+<br>　2行目の条件（『matches regex』）は正規表現で条件をかけますが
+<br>　『+』,『++』,・・・と『+』10個までの文字列にマッチします
+<br>　結構難しく、試行錯誤を繰り返してしまいましたが、TV ++として音量を2つあげるということを当初の目的を達成できました
 <br>
-<br>　あとConditionalユーティリティでちょっと躓きました
-<br>　thenとelseの後にテキストボックスがあるので、後続に受け渡すパラメータを描くのかと思ったりしましたが
-<br>　違いました。ワークフローをわかりやすくするためのテキストです
-<br>　今回は、URLパターンにマッチしたら『翻訳』、アンマッチなら『エラー』としています
-<br>　ワークフローの緑色のオブジェクトを開いてみてくださいね
-### 5.翻訳させる
-　Open URLを使ってページ翻訳をしています。英語→日本語固定です
-<br>  直前のスクリプトで対象ページのURLをechoして{query}に受け渡しています
-<br>　ちなみにですが、日本語ページを英語ページに変えるほうが面白いですね
-### 6.エラー処理をつける　
-　HOTKEYスタートなので、エラーの際のフィードバックとしてLarge Typeをつかってみました
-### 7.追加機能：
-　・HOTKEY『⌥s』を押すとsafariで開いているページを翻訳
-<br>　・HOTKEY『⌥c』を押すとchromeで開いているページを翻訳
-<br>（ホットキーはご自身での設定が必要です）
-### 8.ブラウザで表示されているURLを取得する
- AppleScriptを利用します。例のアプリケーションにTellする独特な言語です
-<br> osascriptコマンドを経由させるとシェルスクリプトで利用できます
-<br> 以下の構文です
-```
- osascript -e 'AppleScript'
-```
-<br> さて具体的に、Safariで表示しているURLを取得するには以下でOK
-``` 
- osascript -e 'tell app "safari" to get the url of the current tab of window 1'
-```
-<br> もうひとつChromeの場合はこうです
-```
- osascript -e 'tell app "google chrome" to get the url of the active tab of window 1'
-```
-<br> そしてこれらのosascriptコマンドの結果をOpen URLに受け渡すためバックスラッシュ(`)で囲ってエコーしています
-<br> 多層ネストスクリプト！　これは世界がひろがりますね　　
+<br>　3行目は上記のマイナスバージョンです
+<br>　後続のRun Scriptはほぼ同じですが、remo操作用のIDが異なるので、ここで分岐させました
 <br>
-<br> ※Alfred4がアプリケーションへアクセスすることを許可する必要があります
-<br>  システム環境設定→セキュリティとプライバシー→プライバシータブ→オートメーション
-<br>  Alfred4にsafariやgoogle chromeを制御する許可を付与
+<br>　4行目はその他でチャンネル変更になります
+<br>　数字や文字での指定が可能ですが、詳細はスクリプトで実装します
+### 5.APIを利用する
+　atureRemoのAPIでは、tokenとIDで、どのNatureRemoで何の操作をするかを指定します
+<br>　tokenは変数として固有の値を指定しているので、スクリプト内では$tokenとして記述できます
+<br>　curlのコマンドに埋め込んでいます
+<br>
+<br>　channel以外のスクリプトはスクリプト内で1つのIDしか利用していませんが、
+<br>　それぞれの環境でIDが異なるのでcurlに直で書かずに、変数としてセットしています
+<br>　またCurlが長文になるので\で区切って改行させています
+<br>
+<br>　ヴォリューム用のスクリプトでは文字の長さ分の繰り返し処理をしています
+<br>　下記の＄{#1}がパラメータの長さを取得するコードです
+<br>　『++』であれば2、『---』であれば3となります
+```
+　for ((i=0;i<${#1};i++)) ; do
+```
+### 4.チャンネル変更用のIDをセットする
+　チャンネル変更のスクリプトはcaseで多重分岐を処理しています
+<br>　条件が文字列マッチで、正規表現のように|がorの意味です
+<br>
+<br>　ちなみにcaseはesacで締め、ifはfiで締めていて粋な感じですね
+<br>　for（というかdo?）はrofでなないのですね
+
 #### 取扱説明
 ### 機能:
-　選択中もしくはクリップボードのURLのサイトを日本語に翻訳する
-<br>　※ワークフローのArg and Vals,Conditionalユーティリティを利用するサンプルです
+　NatureRemoのAPIでTVをリモコン操作する
+<br>　※conditionalユーティリティ、export禁止変数のサンプルです
 ### インストール:
-　1.[alfredworkflow](https://github.com/KitanoTamotsu/translate/releases/download/1.1/Translate.Webpage.by.google.alfredworkflow.zip)をダウンロード 
+　1.[alfredworkflow](https://github.com/KitanoTamotsu/natureremo/releases/download/1.0/TV.with.NatureRemo.alfredworkflow.zip)をダウンロード 
 <br>　2.ファイルをダブルクリックしてワークフローに登録
+<br>　3.NatureRemoのアクセス用トークンを入力し変数を設定（インストール後で可能）
+<br>　　※ワークフロー右上の[χ]をクリックして設定
+<br>　4.多分スクリプトにある$IDも変更が必要（インストール後に変更）
+<br>　　※Run Scriptを開いて書き換え
 ### 使い方:
-　翻訳したいのページのURLを選択（もしくはブラウザで表示させて）してHOTKEYで起動
-（ホットキーはご自身で設定が必要です）
+<br>　1.Hotkey『⌃t』（HOTKEYはご自身で設定が必要です）でテレビのON/OFF
+<br>　
+<br>　2.キーワード『TV』＋　パラメータでテレビをコントロール
+<br>　例）
+<br>　　TV（パラメータなし）　ON/OFF
+<br>　　TV　数字/文字　      チャンネル変更
+<br>　　TV　+/-　           Vol変更
+
+
 #### 修正履歴
-### ver1.1(2021-04-04)：
-　シェルスクリプトをbashからzshに変更
+### ver1.0既知のバグ
+<br>　チャンネル変更でetvをセットする条件が誤っていました
+<br>　3|etv|eとなっていますが、2|etv|eが正解です
+<br>　セットするIDについても違っていました。下記が正しいものですが、NatureRemo登録の仕方で変わります（バージョンや製品で変わるかもしれません）
+<br>　e8c7cff1-343e-4b5f-ae0b-fdb4927307aa　（NatuerRemoのデフォルトアイコン2に相当するものす。もとのワークフローでは3相当のIDでした）
+<br>　TV東京も同様にIDが12のものでした。7が正しいです
+ 
+### ver1.1
+ TV番組表.alfredworkflowと連携させるため、青い部分を追加しています
+<br>　開発メモ等の詳細は、https://github.com/KitanoTamotsu/tv をご覧ください
 <br>
 <br>
 [トップページに戻る](https://kitanotamotsu.github.io/)
