@@ -61,7 +61,7 @@
 　for ((i=0;i<${#1};i++)) ; do
 ```
 <br>　
-<br>　RunScript （音量大）
+<br>　RunScript （Volume +）
 <br>　<img width="600" src="https://user-images.githubusercontent.com/40127279/126858977-c705e7b3-a334-48ea-adfc-c1c8efc2b4ed.png">
 
 ### 4.チャンネル変更用のIDをセットする
@@ -71,7 +71,7 @@
 <br>　ちなみにcaseはesacで締め、ifはfiで締めていて粋な感じですね
 <br>　for（というかdo?）はrofでなないのですね
 <br>　
-<br>　RunScript （チャンネル）
+<br>　RunScript （Channel）
 <br>　<img width="600" src="https://user-images.githubusercontent.com/40127279/126859013-b9c3ce5c-fef9-4430-b4b2-26797296170a.png">
 
 #### 取扱説明
