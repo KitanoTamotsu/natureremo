@@ -1,5 +1,7 @@
 ## 　　Lesson10.　TVのリモコン
 #### 開発メモ
+ワークフロー
+<br>　<img width="600"  src="https://user-images.githubusercontent.com/40127279/126858838-6207222c-1d9c-45d6-85e1-86e0303f80a9.png">
 ### 1.NatureRemoのAPI
 　URLでNatureRemoをコントロールできます
 <br>　Tokenの取得やAPIの詳細はインターネットで調べてください
@@ -12,15 +14,15 @@
 <br>　インストール後には、Nameにtoken、valueが空欄、Don't Exportにチェックとなっています
 <br>　valueにご自身の使いたいNatureRemoのトークンを貼り付けてください
 <br>　引用符は不要です
-### 2.export禁止変数
-　tokenのような情報はexport禁止の変数として管理します
-<br>　ワークフロー右上の[χ]をクリックして環境変数の一覧を表示させてください
-<br>　インストール後には、Nameにtoken、valueが空欄、Don't Exportにチェックとなっています
-<br>　valueにご自身の使いたいNatureRemoのトークンを貼り付けてください
-<br>　引用符は不要です　
+<br>　
+<br>　Configure workflow and variables
+<br>　<img width="600"  src="https://user-images.githubusercontent.com/40127279/126858892-357ec2f8-864c-469d-ba0c-4459d081ee21.png">
 ### 3.キーワード（TV）入力時のパラメータ
 　キーワドなしとキーワドありをサポートしたいのでArgument Optionalを指定しています
 <br>　この後のconditionalユーティリティで処理の分岐を制御しています
+<br>　
+<br>　Keyword
+<br>　<img width="485" src="https://user-images.githubusercontent.com/40127279/126858910-588bfe67-1873-4ca3-99cd-9827dafb87f6.png">
 ### 4.入力パラメータによって処理を分岐させる（conditionalユーティリティ）
 　今回のconditionalユーティリティは4分岐としています
 <br>　シェルスクリプトのソースは基本コマンドラインの集合で、構造化に向いていないので
@@ -41,6 +43,9 @@
 <br>
 <br>　4行目はその他でチャンネル変更になります
 <br>　数字や文字での指定が可能ですが、詳細はスクリプトで実装します
+<br>
+<br>　conditional 
+<br>　<img width="600" src="https://user-images.githubusercontent.com/40127279/126858946-c9dc59d8-d245-493c-9df1-065ed157fc70.png">
 ### 5.APIを利用する
 　NatureRemoのAPIでは、tokenとIDで、どのNatureRemoで何の操作をするかを指定します
 <br>　tokenはパネルで設定していますが、スクリプト内では$tokenとして記述できます
@@ -55,12 +60,19 @@
 ```
 　for ((i=0;i<${#1};i++)) ; do
 ```
+<br>　
+<br>　RunScript （音量大）
+<br>　<img width="600" src="https://user-images.githubusercontent.com/40127279/126858977-c705e7b3-a334-48ea-adfc-c1c8efc2b4ed.png">
+
 ### 4.チャンネル変更用のIDをセットする
 　チャンネル変更のスクリプトはcaseで多重分岐を処理しています
 <br>　条件が文字列マッチで、正規表現のように|がorの意味です
 <br>
 <br>　ちなみにcaseはesacで締め、ifはfiで締めていて粋な感じですね
 <br>　for（というかdo?）はrofでなないのですね
+<br>　
+<br>　RunScript （チャンネル）
+<br>　<img width="600" src="https://user-images.githubusercontent.com/40127279/126859013-b9c3ce5c-fef9-4430-b4b2-26797296170a.png">
 
 #### 取扱説明
 ### 機能:
