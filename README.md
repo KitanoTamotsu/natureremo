@@ -1,4 +1,3 @@
-## 　　Lesson10.　TVのリモコン
 #### 開発メモ
 ワークフロー
 <br>　<img width="600"  src="https://user-images.githubusercontent.com/40127279/126858838-6207222c-1d9c-45d6-85e1-86e0303f80a9.png">
